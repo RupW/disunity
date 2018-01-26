@@ -43,6 +43,8 @@ class SerializedFileApp(RecursiveFileApp):
         elif pynity.SerializedFile.probe_path(path):
             with pynity.SerializedFile(path) as sf:
                 self.process_serialized(path, sf)
+        else:
+            print("Not an archive or serialized format file")
 
     def process_archive(self, path, archive):
         for entry in archive.entries:
