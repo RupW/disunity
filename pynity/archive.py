@@ -1,5 +1,5 @@
 import lzma
-import lz4
+import lz4.block
 import io
 import os
 import struct
@@ -210,10 +210,7 @@ class ArchiveFileFS(ArchiveFile):
             # nothing to do here
             return block
         elif method in (Compression.LZ4, Compression.LZ4HC):
-            # lz4.decompress() wants the uncompressed size to be part of the input
-            # data, not as a parameter, so we need to copy some bytes here...
-            hdr = struct.pack("<I", uncompressed_size)
-            return lz4.decompress(hdr + block)
+            return lz4.block.decompress(block, uncompressed_size)
         else:
             raise NotImplementedError("_read_block with " + method)
 
